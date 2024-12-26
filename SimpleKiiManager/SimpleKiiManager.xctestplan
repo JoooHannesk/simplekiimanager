@@ -1,0 +1,25 @@
+{
+  "configurations" : [
+    {
+      "id" : "87641F9B-D14B-402D-AAD7-A173905943B4",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:SimpleKiiManager.xcodeproj",
+        "identifier" : "B0351A952D1C5AB800D108A1",
+        "name" : "SimpleKiiManagerTests"
+      }
+    }
+  ],
+  "version" : 1
+}
