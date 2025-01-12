@@ -7,10 +7,9 @@
 
 import Security
 
-/** The secret's kind
-
- Collection of the secret supported kinds, e.g. generic password, internet password, certificate, etc
- */
+/// The secret's kind
+///
+/// Collection of the secret supported kinds, e.g. generic password, internet password, certificate, etc
 public enum SecretKind {
     /// for use with generic password items
     case genericPassword
@@ -22,7 +21,7 @@ public enum SecretKind {
     case cryptographicKey
     /// for use with identity
     case identity
-    
+
     init?(_ specifiedKind: CFString) {
         switch specifiedKind {
         case kSecClassGenericPassword:
@@ -39,7 +38,7 @@ public enum SecretKind {
             return nil
         }
     }
-    
+
     var specifiedKind: CFString {
         switch self {
         case .genericPassword:
@@ -56,23 +55,43 @@ public enum SecretKind {
     }
 }
 
-
-/**
- The secrets accessibility constraint.
- 
- Constraints the device's state in which the secret can be retrieved: e.g. when unlocked, when password is set, etc.
- */
+/// The secret's accessibility constraint.
+///
+/// Controls the keychain item access policy. Depends on device's lock state and passcode settings: e.g. item accessible when unlocked, when password is set, etc.
 public enum SecretAccessibilityMode {
-    // items will be backed up and transferred to a new device
+    /**
+    Item can be accessed while **device is unlocked**, therefore mainly suited for applications accessing the keychain when **running in foreground**.
+    Items marked with this attribute will be **backed up when encrypted backups** are enabled. Reflects `kSecAttrAccessibleWhenUnlocked`.
+     */
     case whenUnlocked
+    
+    /**
+     Item can be accessed when device was initially unlocked after a restart, therefore suitable for applications requiring keychain access when **running in background**.
+     Items marked with this attribute will be **backed up when encrypted backups** are enabled. Reflects `kSecAttrAccessibleAfterFirstUnlock`.
+     */
     case afterFirstUnlock
-    
-    // items will not be backed up!
+
+    /**
+    Item can be accessed while **device is unlocked**, therefore mainly suited for applications accessing the keychain when **running in foreground**. Device is **required to have a passcode set up**.
+    Items marked with this attribute will **never get backed up or migrated to another device**. When a backup is restored, this item will be missing. Disabling the passcode protection on device **deletes all items marked with this attribute**.
+    Reflects `kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly`.
+     */
     case whenPasswordSetAndUnlockedLocalDeviceOnly
+    
+    /**
+    Item can be accessed while **device is unlocked**, therefore mainly suited for applications accessing the keychain when **running in foreground**.
+    Items marked with this attribute will **never get backed up or migrated to another device**. When a backup is restored, this item will be missing.
+    Reflects `kSecAttrAccessibleWhenUnlockedThisDeviceOnly`.
+     */
     case whenUnlockedLocalDeviceOnly
+    
+    /**
+    Item can be accessed when device was initially unlocked after a restart, therefore suitable for applications requiring keychain access when **running in background**.
+    Items marked with this attribute will **never get backed up or migrated to another device**. When a backup is restored, this item will be missing.
+    Reflects `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly`.
+     */
     case afterFirstUnlockLocalDeviceOnly
-    
-    
+
     init?(_ specifiedMode: CFString) {
         switch specifiedMode {
         case kSecAttrAccessibleWhenUnlocked:
@@ -89,7 +108,7 @@ public enum SecretAccessibilityMode {
             return nil
         }
     }
-    
+
     var specifiedMode: CFString {
         switch self {
         case .whenUnlocked:
@@ -107,52 +126,6 @@ public enum SecretAccessibilityMode {
 }
 
 
-// TODO: shorten and add to elements
-/**
- @constant kSecAttrAccessibleWhenUnlocked Item data can only be accessed
-     while the device is unlocked. This is recommended for items that only
-     need be accesible while the application is in the foreground.  Items
-     with this attribute will migrate to a new device when using encrypted
-     backups.
- */
-
-/**
- @constant kSecAttrAccessibleAfterFirstUnlock Item data can only be
-     accessed once the device has been unlocked after a restart.  This is
-     recommended for items that need to be accesible by background
-     applications. Items with this attribute will migrate to a new device
-     when using encrypted backups.
- */
-
-/**
- @constant kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly Item data can
-     only be accessed while the device is unlocked. This is recommended for
-     items that only need to be accessible while the application is in the
-     foreground and requires a passcode to be set on the device. Items with
-     this attribute will never migrate to a new device, so after a backup
-     is restored to a new device, these items will be missing. This
-     attribute will not be available on devices without a passcode. Disabling
-     the device passcode will cause all previously protected items to
-     be deleted.
- */
-
-/**
- @constant kSecAttrAccessibleWhenUnlockedThisDeviceOnly Item data can only
-     be accessed while the device is unlocked. This is recommended for items
-     that only need be accesible while the application is in the foreground.
-     Items with this attribute will never migrate to a new device, so after
-     a backup is restored to a new device, these items will be missing.
- */
-
-/**
- @constant kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly Item data can
-     only be accessed once the device has been unlocked after a restart.
-     This is recommended for items that need to be accessible by background
-     applications. Items with this attribute will never migrate to a new
-     device, so after a backup is restored to a new device these items will
-     be missing.
- */
-
 public enum KiiManagerError: Error {
     case genericError(OSStatus)
     case securityEntitlementError(String)
@@ -164,11 +137,15 @@ public enum KiiManagerError: Error {
 }
 
 /**
- Custom entry type retrieved from keychain
+Custom type representing an element retrieved from keychain
+
+Defines a custom struct representing an entry/element/item (call it whatever you like) retrieved from keychain holding its properties.
  */
 public struct KiiSecret: CustomStringConvertible {
+    /// Secret label as given when stored in keychain
+    public let labelName: String
     /// Secret service name as given when stored in keychain
-    public let serviceName: String
+    public let serviceName: String?
     /// Secret account name as given when stored in keychain (optional)
     public let accountName: String?
     /// Actual secret (e.g. password, token, etc.) as given when stored in keychain
@@ -186,16 +163,17 @@ public struct KiiSecret: CustomStringConvertible {
 }
 
 // MARK: - Helper Functions
-/**
- Get a string representation for data model
- - Parameter for: type/instance to show its custom String representation
- - Returns: string representation of dataModelObject
- */
-fileprivate func getStringRepresentation(for dataModelObject: Any) -> String {
-    var stringRepresentation: String = String(describing: type(of: dataModelObject)) + " – "
+/// Get a string representation for data model
+///
+/// - Parameter for: type/instance to show its custom String representation
+/// - Returns: string representation of dataModelObject
+private func getStringRepresentation(for dataModelObject: Any) -> String {
+    var stringRepresentation: String =
+        String(describing: type(of: dataModelObject)) + " – "
     let dataModelObjectMirror: Mirror = Mirror(reflecting: dataModelObject)
     for dataModelObjectProperty in dataModelObjectMirror.children {
-        stringRepresentation += "\(String(describing: dataModelObjectProperty.label ?? "")): \(String(describing: dataModelObjectProperty.value)) "
+        stringRepresentation +=
+            "\(String(describing: dataModelObjectProperty.label ?? "")): \(String(describing: dataModelObjectProperty.value)) "
     }
     return stringRepresentation
 }
