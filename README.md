@@ -29,3 +29,5 @@ This library works with:
 ## Contact and Contribution
 * Johannes Kinzig – [Mail](mailto:johannes@parallelogon-software.com) – [Web](https://parallelogon-software.com)
 
+## Project Avatar Image
+* Image source: A bunch of laptops with a lock on them photo / Unsplash / Allison Saeng / used under Unsplash+ License
