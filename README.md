@@ -1,4 +1,4 @@
-![project_avatar_icon]()
+![project_avatar_icon](https://bitbucket.org/swift-projects/simplekiimanager/raw/main/Meta/SimpleKiiManager-project-avatar-icon.jpg)
 
 # SimpleKiiManager
 ToDo
