@@ -1,6 +1,6 @@
 # ``SimpleKiiManager``
 
-ToDo
+Simple wrapper around the default keychain API.
 
 ## Overview
 
