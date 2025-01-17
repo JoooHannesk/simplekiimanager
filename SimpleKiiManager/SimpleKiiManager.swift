@@ -24,21 +24,21 @@ public class SimpleKiiManagerSt {
     /**
      Add a secret to secure storage (keychain)
      
-     - Parameter labelName: Secret's label name.
+     - Parameter accountName: Secret's account, e.g. username, profile name.
+     - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's service name. **Optional, default: nil**
-     - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
      - Parameter secretValue: The actual secret, e.g. password, passphrase, pin, token, etc.
      - Parameter comment: Comment for entry. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
      - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
      - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. Default: false
      - Throws: An error of type ``KiiManagerError``.
-     - Note: This library assumes that `labelName` is always given when adding a new entry to the keychain.
+     - Note: This library assumes that `accountName` is always given when adding a new entry to the keychain.
      */
     public func addSecret(
-        labelName: String,
+        accountName: String,
+        labelName: String? = nil,
         serviceName: String? = nil,
-        accountName: String? = nil,
         secretValue: String,
         comment: String? = nil,
         secretKind: SecretKind = .genericPassword,
@@ -48,18 +48,18 @@ public class SimpleKiiManagerSt {
         throws(KiiManagerError)
     {
         var addSecretQuery: Dictionary<String, Any> = [
-            kSecAttrLabel as String: labelName,
+            kSecAttrAccount as String: accountName,
             kSecValueData as String: secretValue.data(using: .utf8)!,
             kSecClass as String: secretKind.specifiedKind,
             kSecAttrAccessible as String: accessibilityMode.specifiedMode,
             kSecAttrSynchronizable as String: cloudSynchronization,
             ]
         
+        if let labelName = labelName {
+            addSecretQuery[kSecAttrLabel as String] = labelName
+        }
         if let serviceName = serviceName {
             addSecretQuery[kSecAttrService as String] = serviceName
-        }
-        if let accountName = accountName {
-            addSecretQuery[kSecAttrAccount as String] = accountName
         }
         if let comment = comment {
             addSecretQuery[kSecAttrComment as String] = comment
@@ -79,14 +79,14 @@ public class SimpleKiiManagerSt {
     /**
      Retrieve secret from secure storage (keychain)
 
+     - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
      - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's (service/entry) name, e.g. item name. **Optional, default: nil**
-     - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
      - Returns: The requested etntry as ``KiiSecret``
      - Throws: An error of type ``KiiManagerError``
      */
-    public func getSecret(labelName: String? = nil, serviceName: String? = nil, accountName: String? = nil,
+    public func getSecret(accountName: String? = nil, labelName: String? = nil, serviceName: String? = nil,
                           secretKind: SecretKind = .genericPassword) throws(KiiManagerError) -> KiiSecret {
         
         guard !(labelName == nil && serviceName == nil && accountName == nil) else {
@@ -100,14 +100,14 @@ public class SimpleKiiManagerSt {
                 kSecMatchLimit as String: kSecMatchLimitOne,
             ]
         
+        if let accountName = accountName {
+            getSecretQuery[kSecAttrAccount as String] = accountName
+        }
         if let labelName = labelName {
             getSecretQuery[kSecAttrLabel as String] = labelName
         }
         if let serviceName = serviceName {
             getSecretQuery[kSecAttrService as String] = serviceName
-        }
-        if let accountName = accountName {
-            getSecretQuery[kSecAttrAccount as String] = accountName
         }
 
         var secretDataTypeRef: CFTypeRef?
@@ -148,9 +148,9 @@ public class SimpleKiiManagerSt {
     /**
      Update entry properties for secret entry
      
-     - Parameter labelName: Secret's label name.
+     - Parameter accountName: Secret's account, e.g. username, profile name.
+     - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's (service/entry) name, e.g. item name. **Optional, default: nil**
-     - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
      - Parameter newLabelName: New label name. **Optional, default: nil**
      - Parameter newServiceName: New service name. **Optional, default: nil**
@@ -159,23 +159,22 @@ public class SimpleKiiManagerSt {
      - Parameter newComment: New comment. **Optional, default: nil**
      - Throws: An error of type ``KiiManagerError``.
      */
-    public func updateSecret(labelName: String,
-                             serviceName: String? = nil, accountName: String? = nil, secretKind: SecretKind = .genericPassword,
+    public func updateSecret(accountName: String, labelName: String? = nil, serviceName: String? = nil, secretKind: SecretKind = .genericPassword,
                              newLabelName: String? = nil, newServiceName: String? = nil, newAccountName: String? = nil, newSecret: String? = nil, newComment: String? = nil)
     throws(KiiManagerError) {
         
         // find entry in keychain which will be updated
         var searchEntryQuery: Dictionary<String, Any> = [
-            kSecAttrLabel as String: labelName,
+            kSecAttrAccount as String: accountName,
             kSecClass as String: secretKind.specifiedKind
         ]
         
         // modify query depeding on given parameters/arguments
+        if let labelName = labelName {
+            searchEntryQuery[kSecAttrLabel as String] = labelName
+        }
         if let serviceName = serviceName {
             searchEntryQuery[kSecAttrService as String] = serviceName
-        }
-        if let accountName = accountName {
-            searchEntryQuery[kSecAttrAccount as String] = accountName
         }
         
         // define query to update entry
@@ -210,25 +209,24 @@ public class SimpleKiiManagerSt {
     /**
      Remove secret from secure storage (keychain).
      
-     - Parameter labelName: Secret's label name.
+     - Parameter accountName: Secret's account, e.g. username, profile name.
+     - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's service name. **Optional, default: nil**
-     - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
      - Throws: An error of type ``KiiManagerError``.
-     - Note: This library assumes that `labelName` is always given when adding a new entry to the keychain.
      */
-    public func removeSecret(labelName: String, serviceName: String? = nil, accountName: String? = nil, secretKind: SecretKind = .genericPassword) throws(KiiManagerError) {
+    public func removeSecret(accountName: String, labelName: String? = nil, serviceName: String? = nil, secretKind: SecretKind = .genericPassword) throws(KiiManagerError) {
         // find entry in keychain which will be deleted
         var deleteQuery: Dictionary<String, Any> = [
-            kSecAttrLabel as String: labelName,
+            kSecAttrAccount as String: accountName,
             kSecClass as String: secretKind.specifiedKind
         ]
         
         if let serviceName = serviceName {
             deleteQuery[kSecAttrService as String] = serviceName
         }
-        if let accountName = accountName {
-            deleteQuery[kSecAttrAccount as String] = accountName
+        if let labelName = labelName {
+            deleteQuery[kSecAttrLabel as String] = labelName
         }
         
         // delete entry
