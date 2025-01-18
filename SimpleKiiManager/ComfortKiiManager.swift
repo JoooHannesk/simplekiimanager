@@ -4,11 +4,14 @@
 //
 //  Created by Johannes Kinzig on 16.01.25.
 //
-//  Add functionality to read and write string vars to keychain by offering a property wrapper
-//
 
 import Foundation
 
+/**
+ Provide functionality to read and write secrets to keychain by offering a property wrapper
+ 
+ Implementation based on ``SimpleKiiManagerSt``
+ */
 @propertyWrapper public struct ComfortKiiManager {
     let accountName: String
     let labelName: String?
@@ -39,7 +42,6 @@ import Foundation
      - Parameter accountName: Secret's account, e.g. username, profile name.
      - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's service name. **Optional, default: nil**
-     - Parameter secretValue: The actual secret, e.g. password, passphrase, pin, token, etc.
      - Parameter comment: Comment for entry. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
      - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
@@ -93,7 +95,7 @@ import Foundation
     /// Update secret in keychain using framework API
     func updateSecret(secretValue: String) {
         do {
-            try simpleKiiManager.updateSecret(accountName: self.accountName, labelName: self.labelName, serviceName: self.serviceName, secretKind: self.secretKind, newSecret: secretValue)
+            try simpleKiiManager.updateSecret(accountName: self.accountName, labelName: self.labelName, serviceName: self.serviceName, secretKind: self.secretKind, newSecretValue: secretValue)
         }
         catch {
             print(error)

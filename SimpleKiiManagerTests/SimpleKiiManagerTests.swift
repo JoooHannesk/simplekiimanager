@@ -8,6 +8,9 @@
 import XCTest
 @testable import SimpleKiiManager
 
+/**
+ Test `SimpleKiiManagerSt` implementation
+ */
 final class SimpleKiiManagerStTests: XCTestCase {
     // constants for initially adding secret
     let defaultSecretLabelName = "SimpleKiiManagerLabel"
@@ -41,7 +44,7 @@ final class SimpleKiiManagerStTests: XCTestCase {
     
     func test03UpdateSecret() {
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName,
-                                                                    newLabelName: newLabelName, newServiceName: new1SecretServiceName, newAccountName: new1SecretAccountName, newSecret: new1SecretValue, newComment: new1comment))
+                                                                    newLabelName: newLabelName, newServiceName: new1SecretServiceName, newAccountName: new1SecretAccountName, newSecretValue: new1SecretValue, newComment: new1comment))
     }
     
     func test04GetUpdatedSecret() throws {
@@ -64,7 +67,35 @@ final class SimpleKiiManagerStTests: XCTestCase {
     }
 }
 
+/**
+ Test `SimpleKiiManagerSt.shared.addOrUpdateSecretValue` method implementation
+ */
+final class AddOrUpdateTests: XCTestCase {
+    let defaultSecretLabelName = "SimpleKiiManagerLabel"
+    let defaultSecretAccountName = "test1@account.com"
+    let defaultSecretValue = "ThisIsSuperSecretPassword1ForTestingPurpose."
+    let default2SecretValue = "NewSuperSecretPasswordForTesting."
+    
+    func test01AddOrUpdateNewSecret() {
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: defaultSecretValue))
+        XCTAssertEqual(defaultSecretValue, try SimpleKiiManagerSt.shared.getSecret(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).secretValue)
+    }
+    
+    func test02UpdateExistingSecret() {
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: default2SecretValue))
+        XCTAssertEqual(default2SecretValue, try SimpleKiiManagerSt.shared.getSecret(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).secretValue)
+    }
+    
+    func test03DeleteSecret() {
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.removeSecret(accountName: defaultSecretAccountName))
+        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: defaultSecretAccountName))
+    }
+    
+}
 
+/**
+ Test `ComfortKiiManager` implementation
+ */
 final class ComfortKiiManagerTests: XCTestCase {
     @ComfortKiiManager(accountName: "mySimpleSecret")
     var mySecret: String?

@@ -106,12 +106,8 @@ public class SimpleKiiManagerSt {
 
         var secretDataTypeRef: CFTypeRef?
         let result = SecItemCopyMatching(getSecretQuery as CFDictionary, &secretDataTypeRef)
-
-        if result == errSecItemNotFound {
-            throw KiiManagerError.entryNotFound("Requested secret not found")
-        } else if result != errSecSuccess {
-            throw KiiManagerError.genericError(result)
-        }
+        
+        try throwErrorFor(result)
         
         guard let secretData = secretDataTypeRef as? Dictionary<String, Any?> else {
             throw KiiManagerError.dataFormatMissmatch
@@ -149,12 +145,12 @@ public class SimpleKiiManagerSt {
      - Parameter newLabelName: New label name. **Optional, default: nil**
      - Parameter newServiceName: New service name. **Optional, default: nil**
      - Parameter newAccountName: New account name. **Optional, default: nil**
-     - Parameter newSecret: New secret. **Optional, default: nil**
+     - Parameter newSecretValue: New secret. **Optional, default: nil**
      - Parameter newComment: New comment. **Optional, default: nil**
      - Throws: An error of type ``KiiManagerError``.
      */
     public func updateSecret(accountName: String, labelName: String? = nil, serviceName: String? = nil, secretKind: SecretKind = .genericPassword,
-                             newLabelName: String? = nil, newServiceName: String? = nil, newAccountName: String? = nil, newSecret: String? = nil, newComment: String? = nil)
+                             newLabelName: String? = nil, newServiceName: String? = nil, newAccountName: String? = nil, newSecretValue: String? = nil, newComment: String? = nil)
     throws(KiiManagerError) {
         
         // find entry in keychain which will be updated
@@ -183,7 +179,7 @@ public class SimpleKiiManagerSt {
         if let newAccountName = newAccountName {
             updateEntryQuery[kSecAttrAccount as String] = newAccountName
         }
-        if let newSecret = newSecret {
+        if let newSecret = newSecretValue {
             updateEntryQuery[kSecValueData as String] = newSecret.data(using: .utf8)!
         }
         if let newComment = newComment {
@@ -195,6 +191,43 @@ public class SimpleKiiManagerSt {
         
         try throwErrorFor(result)
     }
+    
+    
+    /**
+     Add or update element in keychain
+     
+     Add a new element to keychain or update its secret vlaue in case it already exists. This methods supports updating the elements **secret value only**. When required to update other element properties (e.g. serviceName, labelName) use ``SimpleKiiManagerSt/updateSecret(accountName:labelName:serviceName:secretKind:newLabelName:newServiceName:newAccountName:newSecretValue:newComment:)``.
+     
+     - Parameter accountName: Secret's account, e.g. username, profile name.
+     - Parameter labelName: Secret's label name. **Optional, default: nil**
+     - Parameter serviceName: Secret's service name. **Optional, default: nil**
+     - Parameter secretValue: The actual secret, e.g. password, passphrase, pin, token, etc.
+     - Parameter comment: Comment for entry. **Optional, default: nil**
+     - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
+     - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
+     - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. Default: false
+     - Throws: An error of type ``KiiManagerError``.
+     - Note: This library assumes that `accountName` is always given when adding a new entry to the keychain.
+     */
+    public func addOrUpdateSecretValue(accountName: String,
+                                       labelName: String? = nil,
+                                       serviceName: String? = nil,
+                                       secretValue: String,
+                                       comment: String? = nil,
+                                       secretKind: SecretKind = .genericPassword,
+                                       accessibilityMode: SecretAccessibilityMode = .whenUnlocked,
+                                       cloudSynchronization: Bool = false) throws(KiiManagerError) {
+        do {
+            try self.updateSecret(accountName: accountName, labelName: labelName, serviceName: serviceName,
+                                  secretKind: secretKind, newSecretValue: secretValue)
+        } catch KiiManagerError.entryNotFound {
+            try self.addSecret(accountName: accountName, labelName: labelName, serviceName: serviceName, secretValue: secretValue,
+                               comment: comment, secretKind: secretKind, accessibilityMode: accessibilityMode, cloudSynchronization: cloudSynchronization)
+        } catch {
+            throw error
+        }
+    }
+    
 
     /**
      Remove secret from secure storage (keychain).
@@ -228,14 +261,13 @@ public class SimpleKiiManagerSt {
     
     // MARK: - Helpers
     
-    
     private func throwErrorFor(_ result: OSStatus) throws(KiiManagerError) {
         if result == errSecMissingEntitlement {
             throw KiiManagerError.securityEntitlementError("Check required entitlements and code signing settings!")
         } else if result == errSecDuplicateItem {
             throw KiiManagerError.entryAlreadyExists("Entry already exists. Use 'updateSecret' instead.")
         } else if result == errSecItemNotFound {
-            throw KiiManagerError.entryNotFound("Entry not found for given service and account name!")
+            throw KiiManagerError.entryNotFound("Requested secret not found")
         } else if result != errSecSuccess {
             throw KiiManagerError.genericError(result)
         }
