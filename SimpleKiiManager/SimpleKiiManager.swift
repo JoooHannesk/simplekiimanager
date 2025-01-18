@@ -123,15 +123,15 @@ public class SimpleKiiManagerSt {
             throw KiiManagerError.dataFormatMissmatch
         }
 
-        if let lableName = secretData["labl"] as? String,
+        if let accountName = secretData["acct", default: nil] as? String,
            let secretValueData = secretData[kSecValueData as String] as? Data,
            let secretValue = String(data: secretValueData, encoding: .utf8),
            let creationDate = secretData["cdat"] as? Date,
            let modificationDate = secretData["mdat"] as? Date {
             let secret = KiiSecret(
-                labelName: lableName,
+                accountName: accountName,
+                labelName: secretData["labl"] as? String,
                 serviceName: secretData["svce", default: nil] as? String,
-                accountName: secretData["acct", default: nil] as? String,
                 secretValue: secretValue,
                 secretKind: secretKind,
                 comment: secretData["icmt", default: nil] as? String,

@@ -142,12 +142,12 @@ Custom type representing an element retrieved from keychain
 Defines a custom struct representing an entry/element/item (call it whatever you like) retrieved from keychain holding its properties.
  */
 public struct KiiSecret: CustomStringConvertible {
+    /// Secret account name as given when stored in keychain (optional)
+    public let accountName: String
     /// Secret label as given when stored in keychain
-    public let labelName: String
+    public let labelName: String?
     /// Secret service name as given when stored in keychain
     public let serviceName: String?
-    /// Secret account name as given when stored in keychain (optional)
-    public let accountName: String?
     /// Actual secret (e.g. password, token, etc.) as given when stored in keychain
     public let secretValue: String
     /// Secret kind as given when stored in keychain
