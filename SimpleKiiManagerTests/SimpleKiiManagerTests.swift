@@ -25,11 +25,11 @@ final class SimpleKiiManagerStTests: XCTestCase {
     
     // MARK: - Test with exhaustive method-parameters
     
-    func testa01AddSecret1DefaultFunctionSignature() {
+    func test01AddSecret1DefaultFunctionSignature() {
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName, secretValue: default1SecretValue, comment: default1comment))
     }
     
-    func testa02GetSecretDefaultFunctionSignature() throws {
+    func test02GetSecretDefaultFunctionSignature() throws {
         let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(serviceName: defaultSecretServiceName)
         XCTAssertNotNil(mySecretResponse)
         XCTAssertEqual(mySecretResponse.labelName, defaultSecretLabelName)
@@ -39,12 +39,12 @@ final class SimpleKiiManagerStTests: XCTestCase {
         XCTAssertEqual(mySecretResponse.comment, default1comment)
     }
     
-    func testa03UpdateSecret() {
+    func test03UpdateSecret() {
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName,
                                                                     newLabelName: newLabelName, newServiceName: new1SecretServiceName, newAccountName: new1SecretAccountName, newSecret: new1SecretValue, newComment: new1comment))
     }
     
-    func testa04GetUpdatedSecret() throws {
+    func test04GetUpdatedSecret() throws {
         let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(labelName: newLabelName)
         XCTAssertNotNil(mySecretResponse)
         XCTAssertEqual(mySecretResponse.labelName, newLabelName)
@@ -54,12 +54,12 @@ final class SimpleKiiManagerStTests: XCTestCase {
         XCTAssertEqual(mySecretResponse.comment, new1comment)
     }
     
-    func testa05DeleteSecret() throws {
+    func test05DeleteSecret() throws {
         try SimpleKiiManagerSt.shared.removeSecret(accountName: new1SecretAccountName)
         XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: new1SecretAccountName))
     }
     
-    func testa06GetSecretWithMissingIdentifier() {
+    func test06GetSecretWithMissingIdentifier() {
         XCTAssertThrowsError(try SimpleKiiManagerSt.shared.getSecret(accountName: nil, labelName: nil, serviceName: nil))
     }
 }
