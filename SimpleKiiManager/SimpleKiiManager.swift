@@ -66,14 +66,8 @@ public class SimpleKiiManagerSt {
         }
 
         let result = SecItemAdd(addSecretQuery as CFDictionary, nil)
-
-        if result == errSecMissingEntitlement {
-            throw KiiManagerError.securityEntitlementError("Check required entitlements and code signing settings!")
-        } else if result == errSecDuplicateItem {
-            throw KiiManagerError.entryAlreadyExists("Entry already exists. Use 'updateSecret' instead.")
-        } else if result != errSecSuccess {
-            throw KiiManagerError.genericError(result)
-        }
+        
+        try throwErrorFor(result)
     }
 
     /**
@@ -199,11 +193,7 @@ public class SimpleKiiManagerSt {
         // update entry
         let result = SecItemUpdate(searchEntryQuery as CFDictionary, updateEntryQuery as CFDictionary)
         
-        if result == errSecItemNotFound {
-            throw KiiManagerError.entryNotFound("Entry not found for given service and account name!")
-        } else if result != errSecSuccess {
-            throw KiiManagerError.genericError(result)
-        }
+        try throwErrorFor(result)
     }
 
     /**
@@ -232,7 +222,19 @@ public class SimpleKiiManagerSt {
         // delete entry
         let result = SecItemDelete(deleteQuery as CFDictionary)
         
-        if result == errSecItemNotFound {
+        try throwErrorFor(result)
+
+    }
+    
+    // MARK: - Helpers
+    
+    
+    private func throwErrorFor(_ result: OSStatus) throws(KiiManagerError) {
+        if result == errSecMissingEntitlement {
+            throw KiiManagerError.securityEntitlementError("Check required entitlements and code signing settings!")
+        } else if result == errSecDuplicateItem {
+            throw KiiManagerError.entryAlreadyExists("Entry already exists. Use 'updateSecret' instead.")
+        } else if result == errSecItemNotFound {
             throw KiiManagerError.entryNotFound("Entry not found for given service and account name!")
         } else if result != errSecSuccess {
             throw KiiManagerError.genericError(result)
