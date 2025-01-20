@@ -12,7 +12,7 @@ import Security
  Provide a simple interface to access keychain functionality on macOS, iOS and visionOS
  */
 public class SimpleKiiManagerSt {
-    static let shared: SimpleKiiManagerSt = {
+    public static let shared: SimpleKiiManagerSt = {
         let skiiManager = SimpleKiiManagerSt()
         return skiiManager
     }()
