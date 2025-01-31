@@ -28,10 +28,10 @@ public class SimpleKiiManagerSt {
      - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's service name. **Optional, default: nil**
      - Parameter secretValue: The actual secret, e.g. password, passphrase, pin, token, etc.
-     - Parameter comment: Comment for entry. **Optional, default: nil**
+     - Parameter comment: Description or comment for entry. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
      - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
-     - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. Default: false
+     - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. **Default: false**
      - Throws: An error of type ``KiiManagerError``.
      - Note: This library assumes that `accountName` is always given when adding a new entry to the keychain.
      */

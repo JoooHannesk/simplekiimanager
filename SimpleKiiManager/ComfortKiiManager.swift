@@ -10,7 +10,7 @@ import Foundation
 /**
  Provide functionality to read and write secrets to keychain by offering a property wrapper
  
- Implementation based on ``SimpleKiiManagerSt``
+ For implementation details, refer to ``SimpleKiiManagerSt``
  */
 @propertyWrapper public struct ComfortKiiManager {
     let accountName: String
