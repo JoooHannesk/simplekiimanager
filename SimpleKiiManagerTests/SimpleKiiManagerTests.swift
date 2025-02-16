@@ -110,5 +110,4 @@ final class ComfortKiiManagerTests: XCTestCase {
         XCTAssertEqual(mySecret, "anotherSuperSecretSecret")
         mySecret = nil
     }
-
 }

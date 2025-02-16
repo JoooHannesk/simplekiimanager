@@ -194,7 +194,7 @@ public class SimpleKiiManagerSt {
     
     
     /**
-     Add or update element in keychain
+     Add or update an element in keychain
      
      Add a new element to keychain or update its secret vlaue in case it already exists. This methods supports updating the elements **secret value only**. When required to update other element properties (e.g. serviceName, labelName) use ``SimpleKiiManagerSt/updateSecret(accountName:labelName:serviceName:secretKind:newLabelName:newServiceName:newAccountName:newSecretValue:newComment:)``.
      
