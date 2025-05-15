@@ -1,7 +1,7 @@
 # ``SimpleKiiManager``
 Simple wrapper around the default keychain API.
 
-The native keychain API provided by macOS / iOS is quite advanced and therefore may require some time to dive into. ``SimpleKiiManager`` aims to provide a simple interface around the default API to get started more quickly.
+The native keychain API provided by macOS / iOS is quite advanced and therefore may require some time to dive into. ``SimpleKiiManager`` aims to provide a simple interface around the default API to get started quickly.
 
 ## Supported functionality
 * CRUD operations on keychain items through **simplified functions** (this library offers functions to create, read, update, delete keychain items)
@@ -21,10 +21,10 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * <doc:Tests>
 
 ## Author
-Johannes Kinzig (2025)
+Johannes Kinzig – [Mail](mailto:mail@johanneskinzig.com) – [Web](https://johanneskinzig.com)
 
 ## MIT License
-This library is provided under the MIT License. See <doc:License>
+This library is provided under the MIT License. See <doc:License>. Copyright (c) 2025 Johannes Kinzig
 
 ## Background
 Storing secrets, such as passwords, identities, certificates, etc. on (a) device is always a security challenge. iOS / macOS offers a secure solution for this – named **Keychain**.
