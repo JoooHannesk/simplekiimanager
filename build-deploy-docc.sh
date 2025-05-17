@@ -9,7 +9,7 @@
 
 # Define Script variables
 BUILD_SCHEME_NAME=SimpleKiiManager
-SCP_DESTINATION_URL=scp://$SCPUSER@ssh.strato.de:22/kinzig-developer-docs_com/simplekiimanager
+SCP_DESTINATION_URL=scp://$SCPUSER@kinzigdoccserver:22/kinzig-developer-docs_com/simplekiimanager
 WWW_URL=https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager
 
 # check if SCPUSER is set
