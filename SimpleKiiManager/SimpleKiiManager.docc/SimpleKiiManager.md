@@ -4,8 +4,8 @@ Simple wrapper around the default keychain API.
 The native keychain API provided by macOS / iOS is quite advanced and therefore may require some time to dive into. ``SimpleKiiManager`` aims to provide a simple interface around the default API to get started quickly.
 
 ## Supported functionality
-* CRUD operations on keychain items through **simplified functions** (this library offers functions to create, read, update, delete keychain items)
-* CRUD operations on keychain items through a **property wrapper** (for more comfort and less code)
+* CRUD operations on keychain items through **simplified functions** (this library offers functions to create, read, update, delete keychain items) – see <doc:Usage/Using-SimpleKiiManagerSt>
+* CRUD operations on keychain items through a **property wrapper** (for more comfort and less code) – <doc:Usage/Using-ComfortKiiManager>
 
 ## Version
 * 0.0.1 (Date 01.2025)
@@ -16,12 +16,12 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * visionOS >= 1.3 (untested)
 
 ## Documentation
-* <doc:Installation>: How to add this framework to your Xcode project
-* <doc:Usage>: How to use this library, its methods and property wrappers
-* <doc:Tests>
+* <doc:Installation>: How to add this framework to your Xcode project?
+* <doc:Usage>: How to use this library, its methods and property wrappers?
+* <doc:Tests>: What is covered by the tests?
 
 ## Author
-Johannes Kinzig – [Mail](mailto:mail@johanneskinzig.com) – [Web](https://johanneskinzig.com)
+Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com)
 
 ## MIT License
 This library is provided under the MIT License. See <doc:License>. Copyright (c) 2025 Johannes Kinzig

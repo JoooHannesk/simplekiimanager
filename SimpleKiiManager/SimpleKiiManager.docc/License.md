@@ -1,5 +1,5 @@
 # License
-This library is developed and provided under the MIT License
+This library is provided under the MIT License
 
 MIT License
 Copyright (c) 2025 Johannes Kinzig

@@ -7,9 +7,11 @@
 
 import Security
 
-/// The secret's kind
-///
-/// Collection of the secret supported kinds, e.g. generic password, internet password, certificate, etc
+/**
+Items stored in the keychain can represent different kinds of secrets.
+ 
+This enum defines the supported types of keychain items, such as generic passwords, internet passwords, certificates, and more.
+*/
 public enum SecretKind {
     /// for use with generic password items
     case genericPassword
@@ -55,9 +57,12 @@ public enum SecretKind {
     }
 }
 
-/// The secret's accessibility constraint.
-///
-/// Controls the keychain item access policy. Depends on device's lock state and passcode settings: e.g. item accessible when unlocked, when password is set, etc.
+
+/**
+The access policy. Restrict access to keychain items based on the current security state of the device.
+
+Controls the keychain item access policy. Depends on device's security state and passcode settings: e.g. item accessible when unlocked, when password is set, etc.
+ */
 public enum SecretAccessibilityMode {
     /**
     Item can be accessed while **device is unlocked**, therefore mainly suited for applications accessing the keychain when **running in foreground**.
