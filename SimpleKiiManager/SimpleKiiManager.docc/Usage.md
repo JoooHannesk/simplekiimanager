@@ -30,7 +30,12 @@ If the item already exists, an error of type ``KiiManagerError`` will be thrown.
 For more comfort when adding a new item or updating an existing one, refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)`` but make sure to understand its limitations, as described in more details below.
 
 ### Reading an item
-ToDo!
+```swift
+let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(accountName: "user@example.com")
+print(mySecretResponse)
+```
+The return value is of type ``KiiSecret``. The method ``SimpleKiiManagerSt/getSecret(accountName:labelName:serviceName:secretKind:)`` requires at least one of the parameters (`accountName`, `labelName`, or `serviceName`) to be provided. The `secretKind` parameter has a default value of `.genericPassword`. For further details, refer to ``SimpleKiiManagerSt/getSecret(accountName:labelName:serviceName:secretKind:)``.
+
 
 ### Updating an item
 ToDo!

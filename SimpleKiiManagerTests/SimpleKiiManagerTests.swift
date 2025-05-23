@@ -42,6 +42,16 @@ final class SimpleKiiManagerStTests: XCTestCase {
         XCTAssertEqual(mySecretResponse.comment, default1comment)
     }
     
+    func test02GetSecretBasedOnAccountName() throws {
+        let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(accountName: default1SecretAccountName)
+        XCTAssertNotNil(mySecretResponse)
+        XCTAssertEqual(mySecretResponse.labelName, defaultSecretLabelName)
+        XCTAssertEqual(mySecretResponse.serviceName, defaultSecretServiceName)
+        XCTAssertEqual(mySecretResponse.accountName, default1SecretAccountName)
+        XCTAssertEqual(mySecretResponse.secretValue, default1SecretValue)
+        XCTAssertEqual(mySecretResponse.comment, default1comment)
+    }
+    
     func test03UpdateSecret() {
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName,
                                                                     newLabelName: newLabelName, newServiceName: new1SecretServiceName, newAccountName: new1SecretAccountName, newSecretValue: new1SecretValue, newComment: new1comment))

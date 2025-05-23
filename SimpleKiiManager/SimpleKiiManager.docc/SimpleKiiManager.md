@@ -19,6 +19,7 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * <doc:Installation>: How to add this framework to your Xcode project?
 * <doc:Usage>: How to use this library, its methods and property wrappers?
 * <doc:Tests>: What is covered by the tests?
+* <doc:ToDos>: To-Do and Known Issues 
 
 ## Author
 Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com)
