@@ -131,7 +131,7 @@ public enum SecretAccessibilityMode {
 }
 
 
-public enum KiiManagerError: Error {
+public enum KiiManagerError: Error, Equatable {
     case genericError(OSStatus)
     case securityEntitlementError(String)
     case entryAlreadyExists(String)
@@ -165,6 +165,26 @@ public struct KiiSecret: CustomStringConvertible {
     public let modificationDate: Date
     /// String representation of this instance (mainly for developing purpose and comfortable insight)
     public var description: String { return getStringRepresentation(for: self) }
+}
+
+
+/**
+ Represents the type of operation performed on a keychain item.
+
+ This enum is primarily used as the return value of
+ ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)``.
+
+ It indicates whether a new item was added or an existing one was updated.
+ */
+public enum ItemProcessed {
+    /// Indicates that a new item was added to the keychain.
+    case added
+    
+    /// Indicates that an existing item in the keychain was updated.
+    case updated
+    
+    /// Indicates that nothing was performed
+    case nothing
 }
 
 // MARK: - Helper Functions

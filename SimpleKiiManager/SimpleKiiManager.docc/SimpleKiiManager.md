@@ -8,7 +8,8 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * CRUD operations on keychain items through a **property wrapper** (for more comfort and less code) – <doc:Usage/Using-ComfortKiiManager>
 
 ## Newest Version
-* 0.0.1 (Date 01.2025)
+* <doc:ReleaseNotes/Version-002> (Dated 05.2025)
+* <doc:ReleaseNotes/Version-001> (Dated 01.2025)
 
 ## Runs on
 * iOS >= 17.5
@@ -23,12 +24,12 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * <doc:ToDos>: To-Dos and Known Issues
 
 ## Resources
-* SimpleKiiManager Home: 
-* Git Repo: (https://bitbucket.org/swift-projects/simplekiimanager/src/main/)[https://bitbucket.org/swift-projects/simplekiimanager/src/main/]
+* Project Home: [https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html](https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html)
+* Git Repo: [https://bitbucket.org/swift-projects/simplekiimanager/src/main/](https://bitbucket.org/swift-projects/simplekiimanager/src/main/)
 * Documentation (this documentation): [https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/) 
 
 ## Author
-Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com)
+Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com) – [Project Home](https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html)
 
 ## MIT License
 This library is provided under the MIT License. See <doc:License>. Copyright (c) 2025 Johannes Kinzig

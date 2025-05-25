@@ -97,21 +97,25 @@ final class AddOrUpdateTests: XCTestCase {
     let defaultSecretValue = "ThisIsSuperSecretPassword1ForTestingPurpose."
     let default2SecretValue = "NewSuperSecretPasswordForTesting."
     
-    func test01AddOrUpdateNewSecret() {
-        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: defaultSecretValue))
+    func test01AddOrUpdateNewSecret() throws {
+        let processedAction = try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: defaultSecretValue)
         XCTAssertEqual(defaultSecretValue, try SimpleKiiManagerSt.shared.getSecret(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).secretValue)
+        XCTAssertEqual(processedAction, .added)
     }
     
-    func test02UpdateExistingSecret() {
-        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: default2SecretValue))
+    func test02UpdateExistingSecret() throws {
+        let processedAction = try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: default2SecretValue)
         XCTAssertEqual(default2SecretValue, try SimpleKiiManagerSt.shared.getSecret(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).secretValue)
+        XCTAssertEqual(processedAction, .updated)
     }
     
     func test03DeleteSecret() {
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.removeSecret(accountName: defaultSecretAccountName))
-        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: defaultSecretAccountName))
+        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: defaultSecretAccountName)) { error in
+            let purposeError = error as! KiiManagerError
+            XCTAssertEqual(purposeError, KiiManagerError.entryNotFound("Requested secret not found"))
+        }
     }
-    
 }
 
 /**

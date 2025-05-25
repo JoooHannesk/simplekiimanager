@@ -41,13 +41,12 @@ The return value is of type ``KiiSecret``. The method ``SimpleKiiManagerSt/getSe
 ```swift
 // Updating the entry identified by accountName: "user@example.com", labelName: "ExampleLogin", serviceName: "ExampleMailService"
 // Providing new values for its label, service, account, password (aka. secret value) and comment
-try SimpleKiiManagerSt.shared.updateSecret(accountName: "user@example.com", labelName: "ExampleLogin", serviceName: "ExampleMailService",
-                                                            newLabelName: "NewLabelName", newServiceName: "NewServiceName", newAccountName: "newUser@example.com", newSecretValue: "newPaSsWoRd", newComment: "Username changed")
+try SimpleKiiManagerSt.shared.updateSecret(accountName: "user@example.com", labelName: "ExampleLogin", serviceName: "ExampleMailService", newLabelName: "NewLabelName", newServiceName: "NewServiceName", newAccountName: "newUser@example.com", newSecretValue: "newPaSsWoRd", newComment: "Username changed")
 ```
 The parameters `labelName` and `serviceName` are optional and are used to help locate the desired item. The `secretKind` parameter is required, but it has a default value of `.genericPassword`. The parameters used to specify updated values — `newLabelName`, `newServiceName`, `newAccountName`, `newSecretValue`, and `newComment` — are all optional, but at least one should be provided, as calling this method without updating any values would have no practical effect.
 ```swift
-// Updating the password only, solely identifying the item by its account name.
-
+// Updating the password only, solely identifying the item by its account name
+try SimpleKiiManagerSt.shared.updateSecret(accountName: "newUser@example.com", newSecretValue: "mYnEwPaSsWoRd"))
 ```
 Refer to ``SimpleKiiManagerSt/updateSecret(accountName:labelName:serviceName:secretKind:newLabelName:newServiceName:newAccountName:newSecretValue:newComment:)``.
 
@@ -68,10 +67,19 @@ try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: "test1@example
 // 3. delete this item
 try SimpleKiiManagerSt.shared.removeSecret(accountName: "test1@example.com")
 ```
-Refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)``
+Refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)``.
+
+#### Changes with Version 0.0.2
+Since **Version 0.0.2** ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)`` has a (`@discardableResult`) return value of type ``SimpleKiiManager/ItemProcessed`` to indicate if the item was ``SimpleKiiManager/ItemProcessed/added`` or ``SimpleKiiManager/ItemProcessed/updated``.
+```swift
+let processedAction = try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: "test1@example.com", labelName: "SimpleKiiManagerLabel", secretValue: "NewSuperSecretPasswordForTesting")
+```
 
 ### Deleting an item
-ToDo!
+```swift
+try SimpleKiiManagerSt.shared.removeSecret(accountName: "test1@example.com")
+```
+Refer to ``SimpleKiiManagerSt/removeSecret(accountName:labelName:serviceName:secretKind:)``.
 
 ## Using ComfortKiiManager
 This class provides even more comfort using the keychain by offering the CRUD mechanisms through a property wrapper. Even though, its functionality is more basic compared to ``SimpleKiiManagerSt``. Make sure to understand its limitations by looking at the usage example below.
@@ -79,7 +87,7 @@ This class provides even more comfort using the keychain by offering the CRUD me
 ```swift
 import SimpleKiiManager
 
-// 1. init and provide account name for item
+// 1. Init and provide account name for item
 @ComfortKiiManager(accountName: "mySimpleSecret")
 var mySecret: String?
 
@@ -91,7 +99,7 @@ mySecret = "updatedSuperSecretSecret"
 
 // 4. read secret value
 print(mySecret)
-    
+
 // 5. remove item from keychain
 mySecret = nil
 ```

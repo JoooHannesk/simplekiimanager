@@ -209,6 +209,7 @@ public class SimpleKiiManagerSt {
      - Throws: An error of type ``KiiManagerError``.
      - Note: This library assumes that `accountName` is always given when adding a new entry to the keychain.
      */
+    @discardableResult
     public func addOrUpdateSecretValue(accountName: String,
                                        labelName: String? = nil,
                                        serviceName: String? = nil,
@@ -216,16 +217,20 @@ public class SimpleKiiManagerSt {
                                        comment: String? = nil,
                                        secretKind: SecretKind = .genericPassword,
                                        accessibilityMode: SecretAccessibilityMode = .whenUnlocked,
-                                       cloudSynchronization: Bool = false) throws(KiiManagerError) {
+                                       cloudSynchronization: Bool = false) throws(KiiManagerError) -> ItemProcessed {
+        var processed: ItemProcessed = .nothing
         do {
             try self.updateSecret(accountName: accountName, labelName: labelName, serviceName: serviceName,
                                   secretKind: secretKind, newSecretValue: secretValue)
+            processed = .updated
         } catch KiiManagerError.entryNotFound {
             try self.addSecret(accountName: accountName, labelName: labelName, serviceName: serviceName, secretValue: secretValue,
                                comment: comment, secretKind: secretKind, accessibilityMode: accessibilityMode, cloudSynchronization: cloudSynchronization)
+            processed = .added
         } catch {
             throw error
         }
+        return processed
     }
     
 
