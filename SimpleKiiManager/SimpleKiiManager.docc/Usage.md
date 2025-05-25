@@ -38,7 +38,18 @@ The return value is of type ``KiiSecret``. The method ``SimpleKiiManagerSt/getSe
 
 
 ### Updating an item
-ToDo!
+```swift
+// Updating the entry identified by accountName: "user@example.com", labelName: "ExampleLogin", serviceName: "ExampleMailService"
+// Providing new values for its label, service, account, password (aka. secret value) and comment
+try SimpleKiiManagerSt.shared.updateSecret(accountName: "user@example.com", labelName: "ExampleLogin", serviceName: "ExampleMailService",
+                                                            newLabelName: "NewLabelName", newServiceName: "NewServiceName", newAccountName: "newUser@example.com", newSecretValue: "newPaSsWoRd", newComment: "Username changed")
+```
+The parameters `labelName` and `serviceName` are optional and are used to help locate the desired item. The `secretKind` parameter is required, but it has a default value of `.genericPassword`. The parameters used to specify updated values — `newLabelName`, `newServiceName`, `newAccountName`, `newSecretValue`, and `newComment` — are all optional, but at least one should be provided, as calling this method without updating any values would have no practical effect.
+```swift
+// Updating the password only, solely identifying the item by its account name.
+
+```
+Refer to ``SimpleKiiManagerSt/updateSecret(accountName:labelName:serviceName:secretKind:newLabelName:newServiceName:newAccountName:newSecretValue:newComment:)``.
 
 ### Adding or updating an item in a single function call
 Add a new item to keychain or update its secret vlaue in case it already exists.

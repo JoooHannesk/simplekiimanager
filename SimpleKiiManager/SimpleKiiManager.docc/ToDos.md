@@ -1,5 +1,5 @@
 # ToDos
-ToDos and Known Issues
+To-Dos and Known Issues
 
 ## Error Handling for ComfortKiiManager
 * Implement proper error handling within ComfortKiiManager

@@ -52,12 +52,20 @@ final class SimpleKiiManagerStTests: XCTestCase {
         XCTAssertEqual(mySecretResponse.comment, default1comment)
     }
     
-    func test03UpdateSecret() {
+    func test03UpdateEntry() {
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName,
                                                                     newLabelName: newLabelName, newServiceName: new1SecretServiceName, newAccountName: new1SecretAccountName, newSecretValue: new1SecretValue, newComment: new1comment))
     }
     
-    func test04GetUpdatedSecret() throws {
+    func test04UpdatePasswordOnly() throws {
+        let newPassword = "newPassword"
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: new1SecretAccountName, newSecretValue: newPassword))
+        let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(accountName: new1SecretAccountName)
+        XCTAssertEqual(mySecretResponse.secretValue, newPassword)
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: new1SecretAccountName, newSecretValue: new1SecretValue))
+    }
+    
+    func test05GetUpdatedSecret() throws {
         let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(labelName: newLabelName)
         XCTAssertNotNil(mySecretResponse)
         XCTAssertEqual(mySecretResponse.labelName, newLabelName)
@@ -67,13 +75,16 @@ final class SimpleKiiManagerStTests: XCTestCase {
         XCTAssertEqual(mySecretResponse.comment, new1comment)
     }
     
-    func test05DeleteSecret() throws {
+    func test06DeleteSecret() throws {
         try SimpleKiiManagerSt.shared.removeSecret(accountName: new1SecretAccountName)
         XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: new1SecretAccountName))
     }
     
-    func test06GetSecretWithMissingIdentifier() {
-        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.getSecret(accountName: nil, labelName: nil, serviceName: nil))
+    func test07GetSecretWithMissingIdentifier() {
+        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.getSecret(accountName: nil, labelName: nil, serviceName: nil))  { error in
+            let purposeError = error as! KiiManagerError
+            XCTAssertEqual(purposeError, KiiManagerError.invalidIdentifier("'labelName', 'serviceName' and 'accountName' cannot be nil all at once!"))
+        }
     }
 }
 

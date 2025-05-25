@@ -7,7 +7,7 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * CRUD operations on keychain items through **simplified functions** (this library offers functions to create, read, update, delete keychain items) – see <doc:Usage/Using-SimpleKiiManagerSt>
 * CRUD operations on keychain items through a **property wrapper** (for more comfort and less code) – <doc:Usage/Using-ComfortKiiManager>
 
-## Version
+## Newest Version
 * 0.0.1 (Date 01.2025)
 
 ## Runs on
@@ -16,10 +16,16 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * visionOS >= 1.3 (untested)
 
 ## Documentation
+* <doc:ReleaseNotes>: What's New and What Got Fixed?
 * <doc:Installation>: How to add this framework to your Xcode project?
 * <doc:Usage>: How to use this library, its methods and property wrappers?
 * <doc:Tests>: What is covered by the tests?
-* <doc:ToDos>: To-Do and Known Issues 
+* <doc:ToDos>: To-Dos and Known Issues
+
+## Resources
+* SimpleKiiManager Home: 
+* Git Repo: (https://bitbucket.org/swift-projects/simplekiimanager/src/main/)[https://bitbucket.org/swift-projects/simplekiimanager/src/main/]
+* Documentation (this documentation): [https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/) 
 
 ## Author
 Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com)
