@@ -33,7 +33,7 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com) – [Project Home](https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html)
 
 ## MIT License
-This library is provided under the MIT License. See <doc:License>. Copyright (c) 2025 Johannes Kinzig
+This library is provided under the MIT License. See [License](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/license). Copyright (c) 2025 Johannes Kinzig
 
 ## Background
 Storing secrets, such as passwords, identities, certificates, etc. on (a) device is always a security challenge. iOS / macOS offers a secure solution for this – named **Keychain**.
