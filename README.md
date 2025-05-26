@@ -1,4 +1,4 @@
-![project_avatar_icon](https://bitbucket.org/swift-projects/tbrestclientlib/raw/main/Meta/simplekiimanager-avatar.png)
+![project_avatar_icon](https://bitbucket.org/swift-projects/simplekiimanager/raw/main/Meta/simplekiimanager-avatar.png)
 # SimpleKiiManager
 Simple wrapper around the default keychain API.
 
