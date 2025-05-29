@@ -45,11 +45,11 @@ As described above, using the native keychain API can be quite challenging, ther
 
 ## Other keychain libraries
 My library is not the only wrapper for the native keychain API, several more exist:
-- [keychain-swift](https://github.com/evgenyneu/keychain-swift)
-- [Latch](https://github.com/endocrimes/Latch)
-- [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
-- [KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess)
-- [Locksmith](https://github.com/matthewpalmer/Locksmith)
-- [KeyClip](https://github.com/s-aska/KeyClip)
-- [SwiftKeychain](https://github.com/yankodimitrov/SwiftKeychain)
+* [keychain-swift](https://github.com/evgenyneu/keychain-swift)
+* [Latch](https://github.com/endocrimes/Latch)
+* [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
+* [KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess)
+* [Locksmith](https://github.com/matthewpalmer/Locksmith)
+* [KeyClip](https://github.com/s-aska/KeyClip)
+* [SwiftKeychain](https://github.com/yankodimitrov/SwiftKeychain)
 
