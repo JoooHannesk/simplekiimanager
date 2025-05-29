@@ -9,6 +9,7 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * CRUD operations on keychain items through a **property wrapper** (for more comfort and less code) – see [Using ComfortKiiManager](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/usage/#Using-ComfortKiiManager)
 
 ## Newest Version
+* [Version 0.0.3](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-003) (Dated 05.2025)
 * [Version 0.0.2](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-002) (Dated 05.2025)
 * [Version 0.0.1](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-001) (Dated 01.2025)
 
@@ -32,6 +33,9 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 ## Author
 Johannes Kinzig – [Contact me](https://johanneskinzig.com/lets-connect.html) – [Web](https://johanneskinzig.com) – [Project Home](https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html)
 
+## Contribution
+Contribution is always welcome, please [Contact me](https://johanneskinzig.com/lets-connect.html).
+
 ## MIT License
 This library is provided under the MIT License. See [License](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/license). Copyright (c) 2025 Johannes Kinzig
 
@@ -40,5 +44,12 @@ Storing secrets, such as passwords, identities, certificates, etc. on (a) device
 As described above, using the native keychain API can be quite challenging, therefore this library aims to offer a more comfortable starting point.
 
 ## Other keychain libraries
-This is not the only library wrapping the native keychain API, several more exist:
-TODO: link to other libraries
+My library is not the only wrapper for the native keychain API, several more exist:
+- [keychain-swift](https://github.com/evgenyneu/keychain-swift)
+- [Latch](https://github.com/endocrimes/Latch)
+- [SwiftKeychainWrapper](https://github.com/jrendel/SwiftKeychainWrapper)
+- [KeychainAccess](https://github.com/kishikawakatsumi/KeychainAccess)
+- [Locksmith](https://github.com/matthewpalmer/Locksmith)
+- [KeyClip](https://github.com/s-aska/KeyClip)
+- [SwiftKeychain](https://github.com/yankodimitrov/SwiftKeychain)
+

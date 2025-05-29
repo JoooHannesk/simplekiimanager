@@ -18,7 +18,7 @@ import Foundation
     let serviceName: String?
     let comment: String?
     let secretKind: SecretKind
-    let accessibilityMode: SecretAccessibilityMode
+    let accessPolicyMode: AccessPolicy
     let cloudSynchronization: Bool
     
     public let simpleKiiManager = SimpleKiiManagerSt.shared
@@ -44,7 +44,7 @@ import Foundation
      - Parameter serviceName: Secret's service name. **Optional, default: nil**
      - Parameter comment: Comment for entry. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
-     - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
+     - Parameter accessPolicyMode: Specifies the item's access policy mode, default is set to `.whenUnlocked`. Refer to ``AccessPolicy``.
      - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. Default: false
      */
     public init(
@@ -53,7 +53,7 @@ import Foundation
         serviceName: String? = nil,
         comment: String? = nil,
         secretKind: SecretKind = .genericPassword,
-        accessibilityMode: SecretAccessibilityMode = .whenUnlocked,
+        accessPolicyMode: AccessPolicy = .whenUnlocked,
         cloudSynchronization: Bool = false
     ) {
         self.accountName = accountName
@@ -61,7 +61,7 @@ import Foundation
         self.serviceName = serviceName
         self.comment = comment
         self.secretKind = secretKind
-        self.accessibilityMode = accessibilityMode
+        self.accessPolicyMode = accessPolicyMode
         self.cloudSynchronization = cloudSynchronization
     }
     
@@ -69,7 +69,7 @@ import Foundation
     func addSecret(secretValue: String) {
         do {
             try simpleKiiManager.addSecret(accountName: self.accountName, labelName: self.labelName, serviceName: self.serviceName, secretValue: secretValue,
-                                           comment: self.comment, secretKind: self.secretKind, accessibilityMode: self.accessibilityMode, cloudSynchronization: self.cloudSynchronization)
+                                           comment: self.comment, secretKind: self.secretKind, accessPolicyMode: self.accessPolicyMode, cloudSynchronization: self.cloudSynchronization)
         }
         catch {
             print(error)

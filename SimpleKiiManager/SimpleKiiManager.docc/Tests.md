@@ -8,4 +8,4 @@ Tests run locally on your Mac.
 ## Current Situation
 + Test coverage is currently 86%.
 + All test cases were performed with the **item type** set to `.genericPassword`. This is the default value when no explicit argument is provided in the function call. To learn more about the supported item types, see type ``SecretKind``.
-+ All test cases were performed with the **accessibility mode** set to `.whenUnlocked`. This is the default value when no explicit argument is provided in the function call. To learn more about the supported accessibility modes, see section ``SecretAccessibilityMode``.
++ All test cases were performed with the **accessibility mode** set to `.whenUnlocked`. This is the default value when no explicit argument is provided in the function call. To learn more about the supported accessibility modes, see section ``AccessPolicy``.

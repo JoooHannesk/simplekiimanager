@@ -63,7 +63,7 @@ The access policy. Restrict access to keychain items based on the current securi
 
 Controls the keychain item access policy. Depends on device's security state and passcode settings: e.g. item accessible when unlocked, when password is set, etc.
  */
-public enum SecretAccessibilityMode {
+public enum AccessPolicy {
     /**
     Item can be accessed while **device is unlocked**, therefore mainly suited for applications accessing the keychain when **running in foreground**.
     Items marked with this attribute will be **backed up when encrypted backups** are enabled. Reflects `kSecAttrAccessibleWhenUnlocked`.
@@ -172,7 +172,7 @@ public struct KiiSecret: CustomStringConvertible {
  Represents the type of operation performed on a keychain item.
 
  This enum is primarily used as the return value of
- ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)``.
+ ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessPolicyMode:cloudSynchronization:)``.
 
  It indicates whether a new item was added or an existing one was updated.
  */

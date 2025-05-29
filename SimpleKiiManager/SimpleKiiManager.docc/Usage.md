@@ -7,27 +7,27 @@ This library consists of two classes simplifying keychain interactions.
 ## Supported item types and accessibility policies
 Keychain supports different item types based on their intended use (e.g. passwords, identities, certificates, etc.) and maintains different access policies based on the device state (e.g. unlocked, booted but not initially unlocked, etc.). Make sure to select the appropriate one for your specific case.
 * Supported item types: ``SecretKind``
-* Supported access policies: ``SecretAccessibilityMode``
+* Supported access policies: ``AccessPolicy``
 
 ## Using SimpleKiiManagerSt
 This library performs all keychain CRUD operations on a shared singleton.
 
 ### Adding an item to keychain
-In this example a *username* and *passwort*. The item type ``SecretKind`` is set to `.genericPassword` by default (function parameter: `secretKind`) when not explicitely stated otherwise in the function call. The same applies for ``SecretAccessibilityMode``, the default argument for parameter `accessibilityMode` is `.whenUnlocked`.
+In this example a *username* and *passwort*. The item type ``SecretKind`` is set to `.genericPassword` by default (function parameter: `secretKind`) when not explicitely stated otherwise in the function call. The same applies for ``AccessPolicy``, the default argument for parameter `accessPolicyMode` is `.whenUnlocked`.
 ```swift
 import SimpleKiiManager
 
-// parameter *secretKind* and *accessibilityMode* not explicitely stated as the default values are used
+// parameter *secretKind* and *accessPolicyMode* not explicitely stated as the default values are used
 try SimpleKiiManagerSt.shared.addSecret(accountName: "user@example.com", labelName: "ExampleLogin", serviceName: "ExampleMailService", secretValue: "mySuperSecretPassword", comment: "E-Mail login for example user")
 
-// parameter *secretKind* and *accessibilityMode* explicitely stated
-try SimpleKiiManagerSt.shared.addSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName, secretValue: default1SecretValue, comment: default1comment, secretKind: .genericPassword, accessibilityMode: .afterFirstUnlock)
+// parameter *secretKind* and *accessPolicyMode* explicitely stated
+try SimpleKiiManagerSt.shared.addSecret(accountName: default1SecretAccountName, labelName: defaultSecretLabelName, serviceName: defaultSecretServiceName, secretValue: default1SecretValue, comment: default1comment, secretKind: .genericPassword, accessPolicyMode: .afterFirstUnlock)
 ```
-Refer to ``SimpleKiiManagerSt/addSecret(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)``.
+Refer to ``SimpleKiiManagerSt/addSecret(accountName:labelName:serviceName:secretValue:comment:secretKind:accessPolicyMode:cloudSynchronization:)``.
 
 If the item already exists, an error of type ``KiiManagerError`` will be thrown. To update an existing item, refer to ``SimpleKiiManagerSt/updateSecret(accountName:labelName:serviceName:secretKind:newLabelName:newServiceName:newAccountName:newSecretValue:newComment:)``.
 
-For more comfort when adding a new item or updating an existing one, refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)`` but make sure to understand its limitations, as described in more details below.
+For more comfort when adding a new item or updating an existing one, refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessPolicyMode:cloudSynchronization:)`` but make sure to understand its limitations, as described in more details below.
 
 ### Reading an item
 ```swift
@@ -67,10 +67,10 @@ try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: "test1@example
 // 3. delete this item
 try SimpleKiiManagerSt.shared.removeSecret(accountName: "test1@example.com")
 ```
-Refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)``.
+Refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessPolicyMode:cloudSynchronization:)``.
 
 #### Changes with Version 0.0.2
-Since **Version 0.0.2** ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessibilityMode:cloudSynchronization:)`` has a (`@discardableResult`) return value of type ``SimpleKiiManager/ItemProcessed`` to indicate if the item was ``SimpleKiiManager/ItemProcessed/added`` or ``SimpleKiiManager/ItemProcessed/updated``.
+Since **Version 0.0.2** ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessPolicyMode:cloudSynchronization:)`` has a (`@discardableResult`) return value of type ``SimpleKiiManager/ItemProcessed`` to indicate if the item was ``SimpleKiiManager/ItemProcessed/added`` or ``SimpleKiiManager/ItemProcessed/updated``.
 ```swift
 let processedAction = try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: "test1@example.com", labelName: "SimpleKiiManagerLabel", secretValue: "NewSuperSecretPasswordForTesting")
 ```

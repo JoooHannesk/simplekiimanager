@@ -30,7 +30,7 @@ public class SimpleKiiManagerSt {
      - Parameter secretValue: The actual secret, e.g. password, passphrase, pin, token, etc.
      - Parameter comment: Description or comment for entry. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
-     - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
+     - Parameter accessPolicyMode: Specifies the items access policy mode, default is set to `.whenUnlocked`. Refer to ``AccessPolicy``.
      - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. **Default: false**
      - Throws: An error of type ``KiiManagerError``.
      - Note: This library assumes that `accountName` is always given when adding a new entry to the keychain.
@@ -42,7 +42,7 @@ public class SimpleKiiManagerSt {
         secretValue: String,
         comment: String? = nil,
         secretKind: SecretKind = .genericPassword,
-        accessibilityMode: SecretAccessibilityMode = .whenUnlocked,
+        accessPolicyMode: AccessPolicy = .whenUnlocked,
         cloudSynchronization: Bool = false
     )
         throws(KiiManagerError)
@@ -51,7 +51,7 @@ public class SimpleKiiManagerSt {
             kSecAttrAccount as String: accountName,
             kSecValueData as String: secretValue.data(using: .utf8)!,
             kSecClass as String: secretKind.specifiedKind,
-            kSecAttrAccessible as String: accessibilityMode.specifiedMode,
+            kSecAttrAccessible as String: accessPolicyMode.specifiedMode,
             kSecAttrSynchronizable as String: cloudSynchronization,
             ]
         
@@ -204,7 +204,7 @@ public class SimpleKiiManagerSt {
      - Parameter secretValue: The actual secret, e.g. password, passphrase, pin, token, etc.
      - Parameter comment: Comment for entry. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
-     - Parameter accessibilityMode: Specifies the items accessibility mode, default is set to `.whenUnlocked`. Refer to ``SecretAccessibilityMode``.
+     - Parameter accessPolicyMode: Specifies the item's access policy mode, default is set to `.whenUnlocked`. Refer to ``AccessPolicy``.
      - Parameter cloudSynchronization: When set, secret is added to iCloud keychain instead of local keychain. Default: false
      - Throws: An error of type ``KiiManagerError``.
      - Note: This library assumes that `accountName` is always given when adding a new entry to the keychain.
@@ -216,7 +216,7 @@ public class SimpleKiiManagerSt {
                                        secretValue: String,
                                        comment: String? = nil,
                                        secretKind: SecretKind = .genericPassword,
-                                       accessibilityMode: SecretAccessibilityMode = .whenUnlocked,
+                                       accessPolicyMode: AccessPolicy = .whenUnlocked,
                                        cloudSynchronization: Bool = false) throws(KiiManagerError) -> ItemProcessed {
         var processed: ItemProcessed = .nothing
         do {
@@ -225,7 +225,7 @@ public class SimpleKiiManagerSt {
             processed = .updated
         } catch KiiManagerError.entryNotFound {
             try self.addSecret(accountName: accountName, labelName: labelName, serviceName: serviceName, secretValue: secretValue,
-                               comment: comment, secretKind: secretKind, accessibilityMode: accessibilityMode, cloudSynchronization: cloudSynchronization)
+                               comment: comment, secretKind: secretKind, accessPolicyMode: accessPolicyMode, cloudSynchronization: cloudSynchronization)
             processed = .added
         } catch {
             throw error
@@ -244,7 +244,7 @@ public class SimpleKiiManagerSt {
      - Throws: An error of type ``KiiManagerError``.
      */
     public func removeSecret(accountName: String, labelName: String? = nil, serviceName: String? = nil, secretKind: SecretKind = .genericPassword) throws(KiiManagerError) {
-        // find entry in keychain which will be deleted
+        // find entry in keychain -> is going to be deleted
         var deleteQuery: Dictionary<String, Any> = [
             kSecAttrAccount as String: accountName,
             kSecClass as String: secretKind.specifiedKind
