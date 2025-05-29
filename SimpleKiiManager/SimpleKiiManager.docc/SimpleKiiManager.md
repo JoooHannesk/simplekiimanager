@@ -22,7 +22,7 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * <doc:Installation>: How to add this framework to your Xcode project?
 * <doc:Usage>: How to use this library, its methods and property wrappers?
 * <doc:Tests>: What is covered by the tests?
-* <doc:ToDos>: To-Dos and Known Issues
+* <doc:To-Dos>: To-Dos and Known Issues
 
 ## Resources
 * Project Home: [https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html](https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html)
