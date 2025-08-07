@@ -67,7 +67,7 @@ public class SimpleKiiManagerSt {
 
         let result = SecItemAdd(addSecretQuery as CFDictionary, nil)
         
-        try throwErrorFor(result)
+        try checkResultForError(result)
     }
 
     /**
@@ -107,7 +107,7 @@ public class SimpleKiiManagerSt {
         var secretDataTypeRef: CFTypeRef?
         let result = SecItemCopyMatching(getSecretQuery as CFDictionary, &secretDataTypeRef)
         
-        try throwErrorFor(result)
+        try checkResultForError(result)
         
         guard let secretData = secretDataTypeRef as? Dictionary<String, Any?> else {
             throw KiiManagerError.dataFormatMissmatch
@@ -189,7 +189,7 @@ public class SimpleKiiManagerSt {
         // update entry
         let result = SecItemUpdate(searchEntryQuery as CFDictionary, updateEntryQuery as CFDictionary)
         
-        try throwErrorFor(result)
+        try checkResultForError(result)
     }
     
     
@@ -260,13 +260,13 @@ public class SimpleKiiManagerSt {
         // delete entry
         let result = SecItemDelete(deleteQuery as CFDictionary)
         
-        try throwErrorFor(result)
+        try checkResultForError(result)
 
     }
     
     // MARK: - Helpers
     
-    private func throwErrorFor(_ result: OSStatus) throws(KiiManagerError) {
+    private func checkResultForError(_ result: OSStatus) throws(KiiManagerError) {
         if result == errSecMissingEntitlement {
             throw KiiManagerError.securityEntitlementError("Check required entitlements and code signing settings!")
         } else if result == errSecDuplicateItem {
