@@ -86,6 +86,24 @@ final class SimpleKiiManagerStTests: XCTestCase {
             XCTAssertEqual(purposeError, KiiManagerError.invalidIdentifier("'labelName', 'serviceName' and 'accountName' cannot be nil all at once!"))
         }
     }
+    
+    func test08StoreMultipleSecretsForSameLabelName() throws {
+        // Store secrets
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addSecret(accountName: "test1@account.com", labelName: "TestCaseSimpleKiiManagerLabel", secretValue: "99112233"))
+        XCTAssertNoThrow(try SimpleKiiManagerSt.shared.addSecret(accountName: "User9988@nobody.com", labelName: "TestCaseSimpleKiiManagerLabel", secretValue: "33229988"))
+        // Retrieve secrets
+        do {
+            let allMySecrets = try SimpleKiiManagerSt.shared.getMultipleSecrets(labelName: "TestCaseSimpleKiiManagerLabel")
+            XCTAssertEqual(allMySecrets.count, 2)
+        }
+        catch {
+            XCTFail("Failed to retrieve secrets: \(error.localizedDescription), \(error)")
+        }
+        try SimpleKiiManagerSt.shared.removeSecret(accountName: "test1@account.com", labelName: "TestCaseSimpleKiiManagerLabel")
+        try SimpleKiiManagerSt.shared.removeSecret(accountName: "User9988@nobody.com", labelName: "TestCaseSimpleKiiManagerLabel")
+        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: "test1@account.com"))
+        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.removeSecret(accountName: "User9988@nobody.com"))
+    }
 }
 
 /**

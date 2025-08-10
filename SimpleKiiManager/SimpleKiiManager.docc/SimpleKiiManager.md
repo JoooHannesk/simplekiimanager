@@ -7,7 +7,8 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * CRUD operations on keychain items through **simplified functions** (this library offers functions to create, read, update, delete keychain items) – see <doc:Usage/Using-SimpleKiiManagerSt>
 * CRUD operations on keychain items through a **property wrapper** (for more comfort and less code) – <doc:Usage/Using-ComfortKiiManager>
 
-## Newest Version
+## Version history
+* <doc:ReleaseNotes/Version-005> (Dated 08.2025)
 * <doc:ReleaseNotes/Version-004> (Dated 08.2025)
 * <doc:ReleaseNotes/Version-003> (Dated 05.2025)
 * <doc:ReleaseNotes/Version-002> (Dated 05.2025)

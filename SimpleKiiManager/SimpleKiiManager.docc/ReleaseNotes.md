@@ -1,6 +1,10 @@
 # Release Notes
 What's New and What Got Fixed?
 
+## Version 0.0.5
+* Added a method to retrieve multiple keychain entries using: ``SimpleKiiManagerSt/getMultipleSecrets(accountName:labelName:serviceName:secretKind:numberOfEntries:)``
+* Refer to: <doc:Usage/Reading-items>
+
 ## Version 0.0.4
 * Internal renaming of functions for better clarity
 

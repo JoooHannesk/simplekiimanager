@@ -8,7 +8,9 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 * CRUD operations on keychain items through **simplified functions** (this library offers functions to create, read, update, delete keychain items) – see [Using SimpleKiiManagerSt](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/usage/#Using-SimpleKiiManagerSt)
 * CRUD operations on keychain items through a **property wrapper** (for more comfort and less code) – see [Using ComfortKiiManager](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/usage/#Using-ComfortKiiManager)
 
-## Newest Version
+## Version
+* [Version 0.0.5](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-005) (Dated 08.2025)
+* [Version 0.0.4](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-004) (Dated 08.2025)
 * [Version 0.0.3](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-003) (Dated 05.2025)
 * [Version 0.0.2](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-002) (Dated 05.2025)
 * [Version 0.0.1](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/releasenotes#Version-001) (Dated 01.2025)

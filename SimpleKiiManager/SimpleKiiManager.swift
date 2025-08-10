@@ -71,27 +71,28 @@ public class SimpleKiiManagerSt {
     }
 
     /**
-     Retrieve secret from secure storage (keychain)
-
+     Retrieve all secrets from secure storage (keychain)
+         
      - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
      - Parameter labelName: Secret's label name. **Optional, default: nil**
      - Parameter serviceName: Secret's (service/entry) name, e.g. item name. **Optional, default: nil**
      - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
-     - Returns: The requested etntry as ``KiiSecret``
+     - Parameter retrieve: Number of entries to request (default: 255)
+     - Returns: The requested entry as ``KiiSecret`` inside an array.
      - Throws: An error of type ``KiiManagerError``
+     - Note: There may be multiple entries for the same `labelName` (e.g. same `labelName` but different `accountName`). Use this method to retrieve all secrets previously stored under a single `labelName`.
      */
-    public func getSecret(accountName: String? = nil, labelName: String? = nil, serviceName: String? = nil,
-                          secretKind: SecretKind = .genericPassword) throws(KiiManagerError) -> KiiSecret {
-        
+    public func getMultipleSecrets(accountName: String? = nil, labelName: String? = nil, serviceName: String? = nil,
+                                   secretKind: SecretKind = .genericPassword, numberOfEntries retrieve: UInt8 = 255 ) throws(KiiManagerError) -> [KiiSecret] {
         guard !(labelName == nil && serviceName == nil && accountName == nil) else {
             throw KiiManagerError.invalidIdentifier("'labelName', 'serviceName' and 'accountName' cannot be nil all at once!")
         }
-        
+
         var getSecretQuery: Dictionary<String, Any> = [
                 kSecReturnData as String: true,
                 kSecReturnAttributes as String: true,
                 kSecClass as String: secretKind.specifiedKind,
-                kSecMatchLimit as String: kSecMatchLimitOne,
+                kSecMatchLimit as String: retrieve
             ]
         
         if let accountName = accountName {
@@ -109,30 +110,57 @@ public class SimpleKiiManagerSt {
         
         try checkResultForError(result)
         
-        guard let secretData = secretDataTypeRef as? Dictionary<String, Any?> else {
+        guard let allRetrievedEntries = secretDataTypeRef as? [Dictionary<String, Any?>] else {
             throw KiiManagerError.dataFormatMissmatch
         }
+        var kiiSecrets: [KiiSecret] = []
+        for secretData in allRetrievedEntries {
+            if let accountName = secretData[kSecAttrAccount as String] as? String,
+               let secretValueData = secretData[kSecValueData as String] as? Data,
+               let secretValue = String(data: secretValueData, encoding: .utf8),
+               let creationDate = secretData[kSecAttrCreationDate as String] as? Date,
+               let modificationDate = secretData[kSecAttrModificationDate as String] as? Date {
+                let secret = KiiSecret(
+                    accountName: accountName,
+                    labelName: secretData[kSecAttrLabel as String, default:  nil] as? String,
+                    serviceName: secretData[kSecAttrService as String, default: nil] as? String,
+                    secretValue: secretValue,
+                    secretKind: secretKind,
+                    comment: secretData[kSecAttrComment as String, default: nil] as? String,
+                    creationDate: creationDate,
+                    modificationDate: modificationDate
+                )
+                kiiSecrets.append(secret)
+            }
+            else {
+                throw KiiManagerError.entryIsMissingElements
+            }
+        }
+        return kiiSecrets
+    }
 
-        if let accountName = secretData["acct", default: nil] as? String,
-           let secretValueData = secretData[kSecValueData as String] as? Data,
-           let secretValue = String(data: secretValueData, encoding: .utf8),
-           let creationDate = secretData["cdat"] as? Date,
-           let modificationDate = secretData["mdat"] as? Date {
-            let secret = KiiSecret(
-                accountName: accountName,
-                labelName: secretData["labl"] as? String,
-                serviceName: secretData["svce", default: nil] as? String,
-                secretValue: secretValue,
-                secretKind: secretKind,
-                comment: secretData["icmt", default: nil] as? String,
-                creationDate: creationDate,
-                modificationDate: modificationDate
-            )
-            return secret
+    /**
+     Retrieve a single secret from secure storage (keychain)
+
+     This method is deprecated and **retained solely for backward compatibility and may be removed in future versions!**
+     Use ``SimpleKiiManagerSt/getMultipleSecrets(accountName:labelName:serviceName:secretKind:numberOfEntries:)`` instead. See below for further information.
+     - Parameter accountName: Secret's account, e.g. username, profile name. **Optional, default: nil**
+     - Parameter labelName: Secret's label name. **Optional, default: nil**
+     - Parameter serviceName: Secret's (service/entry) name, e.g. item name. **Optional, default: nil**
+     - Parameter secretKind: The secret's kind, default is set to `.genericPassword`. Refer to ``SecretKind``.
+     - Returns: The requested entry as ``KiiSecret``
+     - Throws: An error of type ``KiiManagerError``
+     - Note: There may be multiple entries for the same `labelName` (e.g. same `labelName` but different `accountName`). **If you’re certain that only a single entry exists, use this method to retrieve it. It is retained solely for backward compatibility and may be removed in future versions!**
+     */
+    @available(*, deprecated, renamed: "getMultipleSecrets(accountName:labelName:serviceName:secretKind:)")
+    public func getSecret(accountName: String? = nil, labelName: String? = nil, serviceName: String? = nil,
+                          secretKind: SecretKind = .genericPassword) throws(KiiManagerError) -> KiiSecret {
+        let kiiSecrets = try getMultipleSecrets(accountName: accountName, labelName: labelName, serviceName: serviceName,
+                                               secretKind: secretKind)
+        guard let kiiSecret = kiiSecrets.first else {
+            throw KiiManagerError.entryNotFound("Requested secret not found")
         }
-        else {
-            throw KiiManagerError.entryIsMissingElements
-        }
+        return kiiSecret
     }
 
     /**
@@ -261,7 +289,6 @@ public class SimpleKiiManagerSt {
         let result = SecItemDelete(deleteQuery as CFDictionary)
         
         try checkResultForError(result)
-
     }
     
     // MARK: - Helpers

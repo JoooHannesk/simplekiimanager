@@ -29,12 +29,25 @@ If the item already exists, an error of type ``KiiManagerError`` will be thrown.
 
 For more comfort when adding a new item or updating an existing one, refer to ``SimpleKiiManagerSt/addOrUpdateSecretValue(accountName:labelName:serviceName:secretValue:comment:secretKind:accessPolicyMode:cloudSynchronization:)`` but make sure to understand its limitations, as described in more details below.
 
-### Reading an item
+### Reading items
+There may be multiple entries for the same `labelName` (e.g. same `labelName` but different `accountName`). Starting with version 0.0.5 two different methods exist to fetch the entries from keychain:
+* Reading a single item: ``SimpleKiiManagerSt/getSecret(accountName:labelName:serviceName:secretKind:)``
+* Reading multiple items: ``SimpleKiiManagerSt/getMultipleSecrets(accountName:labelName:serviceName:secretKind:numberOfEntries:)``
+
+#### Reading a single item
 ```swift
 let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(accountName: "user@example.com")
 print(mySecretResponse)
 ```
 The return value is of type ``KiiSecret``. The method ``SimpleKiiManagerSt/getSecret(accountName:labelName:serviceName:secretKind:)`` requires at least one of the parameters (`accountName`, `labelName`, or `serviceName`) to be provided. The `secretKind` parameter has a default value of `.genericPassword`. For further details, refer to ``SimpleKiiManagerSt/getSecret(accountName:labelName:serviceName:secretKind:)``.
+**If you’re certain that only a single entry exists, use this method to retrieve it. It is retained solely for backward compatibility and may be removed in future versions!**
+
+#### Reading multiple items
+```swift
+let allMySecrets = try SimpleKiiManagerSt.shared.getMultipleSecrets(labelName: "myAppKeychainID")
+print(allMySecrets)
+```
+The return value is of type [``KiiSecret``]. The method ``SimpleKiiManagerSt/getMultipleSecrets(accountName:labelName:serviceName:secretKind:numberOfEntries:)`` requires at least one of the parameters (`accountName`, `labelName`, or `serviceName`) to be provided. The `secretKind` parameter has a default value of `.genericPassword`.
 
 
 ### Updating an item
