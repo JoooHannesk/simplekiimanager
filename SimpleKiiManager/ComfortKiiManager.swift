@@ -79,8 +79,8 @@ import Foundation
     /// Retrieve secret from keychain using framework API
     func getSecret() -> String? {
         do {
-            let secret = try simpleKiiManager.getSecret(accountName: self.accountName, labelName: self.labelName, serviceName: self.serviceName, secretKind: self.secretKind)
-            return secret.secretValue
+            let secret = try simpleKiiManager.getMultipleSecrets(accountName: self.accountName, labelName: self.labelName, serviceName: self.serviceName, secretKind: self.secretKind)
+            return secret.first?.secretValue
         }
         catch {
             if case KiiManagerError.entryNotFound = error {

@@ -33,7 +33,8 @@ final class SimpleKiiManagerStTests: XCTestCase {
     }
     
     func test02GetSecretDefaultFunctionSignature() throws {
-        let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(serviceName: defaultSecretServiceName)
+        let mySecretResponses = try SimpleKiiManagerSt.shared.getMultipleSecrets(serviceName: defaultSecretServiceName)
+        let mySecretResponse = try XCTUnwrap(mySecretResponses.first)
         XCTAssertNotNil(mySecretResponse)
         XCTAssertEqual(mySecretResponse.labelName, defaultSecretLabelName)
         XCTAssertEqual(mySecretResponse.serviceName, defaultSecretServiceName)
@@ -43,7 +44,8 @@ final class SimpleKiiManagerStTests: XCTestCase {
     }
     
     func test02GetSecretBasedOnAccountName() throws {
-        let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(accountName: default1SecretAccountName)
+        let mySecretResponses = try SimpleKiiManagerSt.shared.getMultipleSecrets(accountName: default1SecretAccountName)
+        let mySecretResponse = try XCTUnwrap(mySecretResponses.first)
         XCTAssertNotNil(mySecretResponse)
         XCTAssertEqual(mySecretResponse.labelName, defaultSecretLabelName)
         XCTAssertEqual(mySecretResponse.serviceName, defaultSecretServiceName)
@@ -60,13 +62,15 @@ final class SimpleKiiManagerStTests: XCTestCase {
     func test04UpdatePasswordOnly() throws {
         let newPassword = "newPassword"
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: new1SecretAccountName, newSecretValue: newPassword))
-        let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(accountName: new1SecretAccountName)
+        let mySecretResponses = try SimpleKiiManagerSt.shared.getMultipleSecrets(accountName: new1SecretAccountName)
+        let mySecretResponse = try XCTUnwrap(mySecretResponses.first)
         XCTAssertEqual(mySecretResponse.secretValue, newPassword)
         XCTAssertNoThrow(try SimpleKiiManagerSt.shared.updateSecret(accountName: new1SecretAccountName, newSecretValue: new1SecretValue))
     }
     
     func test05GetUpdatedSecret() throws {
-        let mySecretResponse = try SimpleKiiManagerSt.shared.getSecret(labelName: newLabelName)
+        let mySecretResponses = try SimpleKiiManagerSt.shared.getMultipleSecrets(labelName: newLabelName)
+        let mySecretResponse = try XCTUnwrap(mySecretResponses.first)
         XCTAssertNotNil(mySecretResponse)
         XCTAssertEqual(mySecretResponse.labelName, newLabelName)
         XCTAssertEqual(mySecretResponse.serviceName, new1SecretServiceName)
@@ -81,7 +85,7 @@ final class SimpleKiiManagerStTests: XCTestCase {
     }
     
     func test07GetSecretWithMissingIdentifier() {
-        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.getSecret(accountName: nil, labelName: nil, serviceName: nil))  { error in
+        XCTAssertThrowsError(try SimpleKiiManagerSt.shared.getMultipleSecrets(accountName: nil, labelName: nil, serviceName: nil))  { error in
             let purposeError = error as! KiiManagerError
             XCTAssertEqual(purposeError, KiiManagerError.invalidIdentifier("'labelName', 'serviceName' and 'accountName' cannot be nil all at once!"))
         }
@@ -117,13 +121,13 @@ final class AddOrUpdateTests: XCTestCase {
     
     func test01AddOrUpdateNewSecret() throws {
         let processedAction = try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: defaultSecretValue)
-        XCTAssertEqual(defaultSecretValue, try SimpleKiiManagerSt.shared.getSecret(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).secretValue)
+        XCTAssertEqual(defaultSecretValue, try SimpleKiiManagerSt.shared.getMultipleSecrets(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).first?.secretValue)
         XCTAssertEqual(processedAction, .added)
     }
     
     func test02UpdateExistingSecret() throws {
         let processedAction = try SimpleKiiManagerSt.shared.addOrUpdateSecretValue(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName, secretValue: default2SecretValue)
-        XCTAssertEqual(default2SecretValue, try SimpleKiiManagerSt.shared.getSecret(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).secretValue)
+        XCTAssertEqual(default2SecretValue, try SimpleKiiManagerSt.shared.getMultipleSecrets(accountName: defaultSecretAccountName, labelName: defaultSecretLabelName).first?.secretValue)
         XCTAssertEqual(processedAction, .updated)
     }
     
