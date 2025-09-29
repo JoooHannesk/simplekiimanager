@@ -3,7 +3,7 @@ How to add this framework to your Xcode project.
 
 1. Checkout the latest version:
 ```bash
-git clone https://bitbucket.org/swift-projects/simplekiimanager.git
+git clone https://github.com/JoooHannesk/simplekiimanager.git
 ```
 2. Add the framwork to your existing Xcode project.
     1. Add SimpleKiiManager sources to your project

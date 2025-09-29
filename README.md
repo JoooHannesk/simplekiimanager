@@ -1,4 +1,4 @@
-![project_avatar_icon](https://bitbucket.org/swift-projects/simplekiimanager/raw/main/Meta/simplekiimanager-avatar.png)
+![project_avatar_icon](https://johanneskinzig.com/media/posts/19/responsive/simplekiimanager-sm.png)
 # SimpleKiiManager
 Simple wrapper around the default keychain API.
 
@@ -29,7 +29,7 @@ The native keychain API provided by macOS / iOS is quite advanced and therefore 
 
 ## Resources
 * Project Home: [https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html](https://johanneskinzig.com/simple-wrapper-around-the-default-keychain-api-simplekiimanager.html)
-* Git Repo: [https://bitbucket.org/swift-projects/simplekiimanager/src/main/](https://bitbucket.org/swift-projects/simplekiimanager/src/main/)
+* Git Repo: [https://github.com/JoooHannesk/simplekiimanager.git](https://github.com/JoooHannesk/simplekiimanager.git)
 * Documentation (this documentation): [https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/](https://simplekiimanager.kinzig-developer-docs.com/documentation/simplekiimanager/) 
 
 ## Author
