@@ -18,4 +18,4 @@ git clone https://github.com/JoooHannesk/simplekiimanager.git
 ![Framework was added to target](framework-added-to-target)
 
 ## Signing and Capabilities
-For storing login information in the iOS/macOS keychain, no special entitlements or capabilities are required beyond the default app setup.
+Using this library in an iOS or macOS app project does not require special entitlements or capabilities beyond the default app setup. While this holds for executable targets (e.g. iOS app), this is not true for test targets. Running the tests on an iOS device (incl. simulator) requires corresponding entitlements and codesigning setup.
