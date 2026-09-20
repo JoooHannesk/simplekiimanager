@@ -59,6 +59,8 @@ public class SimpleKiiManagerSt {
             addSecretQuery[kSecAttrLabel as String] = labelName
         }
         if let serviceName = serviceName {
+            // BUG: kSecAttrService is invalid for secretKind == .internetPassword (needs kSecAttrServer instead).
+            // See SimpleKiiManager.docc/To-Dos.md, "BUG: `.internetPassword` items fail because `serviceName` is always written to `kSecAttrService`".
             addSecretQuery[kSecAttrService as String] = serviceName
         }
         if let comment = comment {
@@ -102,6 +104,7 @@ public class SimpleKiiManagerSt {
             getSecretQuery[kSecAttrLabel as String] = labelName
         }
         if let serviceName = serviceName {
+            // BUG: see To-Dos.md ".internetPassword" entry — kSecAttrService is invalid for that kind.
             getSecretQuery[kSecAttrService as String] = serviceName
         }
 
@@ -123,6 +126,7 @@ public class SimpleKiiManagerSt {
                 let secret = KiiSecret(
                     accountName: accountName,
                     labelName: secretData[kSecAttrLabel as String, default:  nil] as? String,
+                    // BUG: see To-Dos.md ".internetPassword" entry — should read kSecAttrServer for that kind.
                     serviceName: secretData[kSecAttrService as String, default: nil] as? String,
                     secretValue: secretValue,
                     secretKind: secretKind,
@@ -192,6 +196,7 @@ public class SimpleKiiManagerSt {
             searchEntryQuery[kSecAttrLabel as String] = labelName
         }
         if let serviceName = serviceName {
+            // BUG: see To-Dos.md ".internetPassword" entry — kSecAttrService is invalid for that kind.
             searchEntryQuery[kSecAttrService as String] = serviceName
         }
         
@@ -202,6 +207,7 @@ public class SimpleKiiManagerSt {
             updateEntryQuery[kSecAttrLabel as String] = newLabelName
         }
         if let newServiceName = newServiceName {
+            // BUG: see To-Dos.md ".internetPassword" entry — kSecAttrService is invalid for that kind.
             updateEntryQuery[kSecAttrService as String] = newServiceName
         }
         if let newAccountName = newAccountName {
@@ -279,6 +285,7 @@ public class SimpleKiiManagerSt {
         ]
         
         if let serviceName = serviceName {
+            // BUG: see To-Dos.md ".internetPassword" entry — kSecAttrService is invalid for that kind.
             deleteQuery[kSecAttrService as String] = serviceName
         }
         if let labelName = labelName {
