@@ -85,7 +85,7 @@ public class SimpleKiiManagerSt {
      - Note: There may be multiple entries for the same `labelName` (e.g. same `labelName` but different `accountName`). Use this method to retrieve all secrets previously stored under a single `labelName`.
      */
     public func getMultipleSecrets(accountName: String? = nil, labelName: String? = nil, serviceName: String? = nil,
-                                   secretKind: SecretKind = .genericPassword, numberOfEntries retrieve: UInt8 = 255 ) throws(KiiManagerError) -> [KiiSecret] {
+                                   secretKind: SecretKind = .genericPassword, numberOfEntries retrieve: UInt8 = UInt8.max ) throws(KiiManagerError) -> [KiiSecret] {
         guard !(labelName == nil && serviceName == nil && accountName == nil) else {
             throw KiiManagerError.invalidIdentifier("'labelName', 'serviceName' and 'accountName' cannot be nil all at once!")
         }
